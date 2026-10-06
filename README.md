@@ -1,130 +1,59 @@
-# 🌿 Eco Living Hub
+# Eco Living Hub 🌿
 
-An intuitive, human-crafted single-page React application designed to help individuals cultivate sustainable lifestyle habits, estimate their weekly carbon & financial savings, and discover actionable eco-friendly tips.
+Eco Living Hub is a simple and clean sustainability tracker built with React and Vanilla CSS. It helps you track daily eco-friendly habits, calculate your carbon and money savings, and explore practical green living tips.
 
-**Live Application**: [https://fahad11abbas.github.io/eco-living-hub/](https://fahad11abbas.github.io/eco-living-hub/)  
+**Live Demo**: [https://fahad11abbas.github.io/eco-living-hub/](https://fahad11abbas.github.io/eco-living-hub/)  
 **Source Code**: [https://github.com/FAHAD11ABBAS/eco-living-hub](https://github.com/FAHAD11ABBAS/eco-living-hub)
 
 ---
 
-## 🌟 Key Features
+## Features
 
-1. **Soft, Modern Eco Aesthetic & Responsiveness**
-   - Fresh botanical color palette with soft mint greens, sage, and warm cream tones.
-   - 100% responsive across mobile phones, tablets, and desktop screens.
-   - Built entirely with pure Vanilla CSS custom properties (`var(--...)`) for a handcrafted look.
-
-2. **Instant Dark & Light Mode**
-   - Toggle smoothly between daytime botanical tones and deep forest night mode with zero external theme libraries.
-   - Automatically saves and restores theme preferences using `localStorage`.
-
-3. **Bilingual Support (English & Finnish / Suomi)**
-   - Instant language switcher in the header demonstrating clean dynamic state management with a localized dictionary.
-
-4. **Interactive Daily Habit Tracker (`EcoHabits`)**
-   - Check off daily eco-friendly actions (green commute, plant-based meal, short shower, unplugging electronics, eco wash cycles).
-   - Real-time CO₂ avoidance points earned for each completed habit.
-   - Filter habits dynamically by category and completion status (`All`, `To Do`, `Completed`).
-   - Quick "Mark All Done" and "Reset Progress" controls.
-
-5. **Dynamic Progress Bar (`ProgressBar`)**
-   - Visual progress meter computing real-time completion percentage.
-   - Dynamic encouraging messages that adapt according to your progress.
-
-6. **Personal Carbon & Savings Calculator (`EcoCalculator`)**
-   - Interactive sliders allowing users to tweak their weekly habits:
-     - Kilometers commuted via bike, walking, or transit.
-     - Number of plant-based meals consumed.
-     - Single-use plastic items avoided.
-     - Energy-saving household actions.
-   - Computes estimated weekly & annual CO₂ reduction (kg/tons) and financial savings in Euros (€).
-   - Shows fun real-world equivalents: trees planted, smartphone charges, and car kilometers avoided.
-
-7. **Categorized Eco Tips & Search (`EcoTips`)**
-   - Filter actionable guides by category (`All`, `Home & Energy`, `Transportation`, `Food & Diet`).
-   - Real-time keyword search bar.
-   - Bookmark tips with the interactive "Helpful" button.
-
-8. **Daily Eco Pledge**
-   - Interactive daily commitment button for positive behavioral reinforcement.
+- **Daily Eco Habits Checklist**: Check off daily actions like walking, eating a plant-based meal, or saving energy to see your daily CO₂ savings.
+- **Dynamic Progress Bar**: Live progress bar and encouraging feedback as you complete habits throughout the day.
+- **Carbon & Money Calculator**: Move the sliders to estimate how much CO₂ and money you save each week and year based on your commute, diet, and energy habits.
+- **Eco Tips with Category Filters**: Filter tips by category (Home, Transport, Food) or search tips using the search box.
+- **Light & Dark Mode**: Toggle between light and dark themes anytime (saved automatically in local storage).
+- **Language Switcher**: Switch the UI between English and Finnish (Suomi) with a single click.
+- **Mobile Friendly**: Fully responsive layout designed to work smoothly on phones, tablets, and laptops.
 
 ---
 
-## 🛠️ React & JavaScript Concepts Demonstrated
+## Technologies Used
 
-- **Component Architecture**: Structured into clean, self-contained components (`Header`, `HeroStats`, `ProgressBar`, `EcoHabits`, `EcoCalculator`, `EcoTips`, `DailyPledge`, `Footer`).
-- **State Management (`useState` & `useEffect`)**:
-  - Managing active theme (`light` vs. `dark`) synchronized to `localStorage` and HTML attributes.
-  - Active language state (`en` vs. `fi`).
-  - Completed habit IDs collection and persistence.
-  - Calculator input bindings with real-time numeric calculations.
-  - Category filters and live search query state.
-- **Array Methods (`map`, `filter`, `reduce`)**:
-  - Filtering habits and eco-tips dynamically without mutating source datasets.
-  - Summing saved CO₂ impact using `.reduce()`.
-- **Performance Optimization (`useMemo`)**:
-  - Memoized mathematical computations and filtering logic for fluid 60fps responsiveness.
-- **Accessible & Semantic HTML5**:
-  - Proper ARIA attributes (`aria-checked`, `role="progressbar"`, semantic `<header>`, `<main>`, `<section>`, `<article>`, `<footer>`).
+- **React 18** (Components, `useState`, `useEffect`, `useMemo`)
+- **Vanilla CSS** (CSS Variables for themes, flexbox & grid, zero heavy UI frameworks)
+- **Vite** (Fast frontend build tool)
+- **GitHub Pages** (Hosting & deployment)
 
 ---
 
-## 📁 Project Structure
+## How to Run Locally
 
-```text
-eco-living-hub/
-├── public/
-│   └── favicon.svg           # Custom botanical favicon
-├── src/
-│   ├── App.jsx               # Main React application & all subcomponents
-│   ├── App.css               # Handcrafted responsive design & theme variables
-│   └── main.jsx              # React DOM root entry point
-├── index.html                # HTML template with Google Fonts & meta tags
-├── vite.config.js            # Vite configuration with GitHub Pages base URL
-├── package.json              # Project dependencies & npm scripts
-└── README.md                 # Project documentation
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/FAHAD11ABBAS/eco-living-hub.git
+   cd eco-living-hub
+   ```
 
----
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## 🚀 Running Locally
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173/` in your browser.
 
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) (version 18 or higher) installed on your computer.
-
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/FAHAD11ABBAS/eco-living-hub.git
-cd eco-living-hub
-```
-
-### Step 2: Install Dependencies
-```bash
-npm install
-```
-
-### Step 3: Start the Development Server
-```bash
-npm run dev
-```
-Open your browser and navigate to `http://localhost:5173/` (or the URL displayed in the terminal).
-
-### Step 4: Build for Production
-```bash
-npm run build
-```
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
 ---
 
-## 📦 Deployment to GitHub Pages
+## Author
 
-The repository is configured to build and deploy to GitHub Pages automatically via `gh-pages`:
-
-```bash
-npm run deploy
-```
-
----
-
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
+Created by **Fahad Abbas** ([FAHAD11ABBAS](https://github.com/FAHAD11ABBAS)).

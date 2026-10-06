@@ -1,22 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 
-/**
- * Multi-language localization dictionary (English & Finnish)
- * Allows instant language toggle across the entire application.
- */
+// Text dictionary for English and Finnish translations
 const translations = {
   en: {
-    // Header & Meta
     brandTitle: "Eco Living Hub",
     brandSubtitle: "Your everyday companion for sustainable living & carbon awareness",
-    tagline: "Small daily actions create massive global impact.",
     langSwitch: "Suomi",
-    currentLang: "EN",
     themeLight: "Light",
     themeDark: "Dark",
 
-    // Hero & Stats
     heroGreeting: "Welcome to your Green Journey",
     heroSubtitle: "Track habits, calculate carbon savings, and discover actionable eco-tips.",
     statHabitsDone: "Habits Completed",
@@ -29,7 +22,6 @@ const translations = {
     levelPractitioner: "Eco Guardian 🌿",
     levelMaster: "Planet Champion 🌍",
 
-    // Progress Bar
     progressTitle: "Daily Eco Progress",
     progressCompleted: "completed",
     msgZero: "Start your day by ticking off your first eco-friendly habit!",
@@ -38,7 +30,6 @@ const translations = {
     msgHigh: "Almost done! Finish strong for a fully sustainable day.",
     msgAll: "Outstanding work! You have completed all today's eco habits! 🌟",
 
-    // Eco Habits Section
     habitsTitle: "Daily Sustainable Habits",
     habitsSubtitle: "Check off the mindful actions you practiced today.",
     filterAll: "All Habits",
@@ -50,7 +41,6 @@ const translations = {
     habitPendingBadge: "Pending",
     noHabitsMatch: "No habits found matching the current filter.",
 
-    // Habits items
     habits: [
       {
         id: 1,
@@ -80,7 +70,7 @@ const translations = {
         id: 4,
         category: "home",
         title: "Unplug Idle Electronics",
-        desc: "Turned off vampire power strips and unplugged idle chargers.",
+        desc: "Turned off power strips and unplugged idle chargers when not in use.",
         co2Saved: 0.4,
         icon: "🔌"
       },
@@ -88,7 +78,7 @@ const translations = {
         id: 5,
         category: "lifestyle",
         title: "Brought Reusable Bottle & Bag",
-        desc: "Avoided single-use plastics by carrying your own water bottle and tote bag.",
+        desc: "Avoided single-use plastics by carrying your own water bottle and bag.",
         co2Saved: 0.3,
         icon: "🛍️"
       },
@@ -112,13 +102,12 @@ const translations = {
         id: 8,
         category: "lifestyle",
         title: "Mindful Digital Footprint",
-        desc: "Cleaned inbox, unsubscribed from junk mail, and closed unused cloud tabs.",
+        desc: "Cleaned inbox, unsubscribed from junk mail, and closed unused tabs.",
         co2Saved: 0.2,
         icon: "💻"
       }
     ],
 
-    // Carbon Calculator Section
     calcTitle: "Personal Carbon Savings Calculator",
     calcSubtitle: "Estimate your weekly and yearly carbon emissions and financial savings by tweaking your habits.",
     inputBikeKm: "Green Commute (km / week walking, biking, or public transit instead of car):",
@@ -132,9 +121,8 @@ const translations = {
     treesEquivalent: "Equivalent Trees Planted",
     phoneChargesEquivalent: "Phone Charges Offset",
     carKmEquivalent: "Car Kilometers Avoided",
-    calcDisclaimer: "*Estimates are based on average European environmental footprint and energy metrics.",
+    calcDisclaimer: "*Estimates are based on standard average environmental footprint metrics.",
 
-    // Eco Tips & Insights Section
     tipsTitle: "Eco-Friendly Guides & Tips",
     tipsSubtitle: "Browse practical advice categorized for easy implementation in your everyday routine.",
     searchTipsPlaceholder: "Search tips by keyword...",
@@ -149,7 +137,6 @@ const translations = {
     helpfulThanks: "Saved!",
     noTipsMatch: "No eco-tips match your search query. Try another keyword!",
 
-    // Tip list
     tips: [
       {
         id: 101,
@@ -163,7 +150,7 @@ const translations = {
         id: 102,
         category: "food",
         title: "Practice 'First In, First Out' in Your Fridge",
-        desc: "Place newer groceries at the back and older items in front. Food waste accounts for roughly 8-10% of all global greenhouse emissions.",
+        desc: "Place newer groceries at the back and older items in front. Preventing food waste saves both money and emissions.",
         difficulty: "Easy",
         rating: "⭐⭐⭐⭐⭐"
       },
@@ -171,7 +158,7 @@ const translations = {
         id: 103,
         category: "transport",
         title: "Maintain Proper Tire Pressure",
-        desc: "Driving on under-inflated tires increases fuel consumption by up to 3%. Check tire pressure monthly to maximize efficiency.",
+        desc: "Driving on under-inflated tires increases fuel consumption by up to 3%. Check tire pressure monthly.",
         difficulty: "Medium",
         rating: "⭐⭐⭐⭐"
       },
@@ -179,7 +166,7 @@ const translations = {
         id: 104,
         category: "home",
         title: "Switch to LED Lighting",
-        desc: "LED bulbs consume 75-80% less energy than traditional incandescent bulbs and last up to 25 times longer.",
+        desc: "LED bulbs consume 75-80% less energy than traditional incandescent bulbs and last much longer.",
         difficulty: "Easy",
         rating: "⭐⭐⭐⭐⭐"
       },
@@ -187,7 +174,7 @@ const translations = {
         id: 105,
         category: "food",
         title: "Embrace Seasonal & Local Produce",
-        desc: "Locally sourced seasonal vegetables require significantly less refrigeration, greenhouse heating, and long-distance transport.",
+        desc: "Locally sourced seasonal vegetables require significantly less refrigeration, heating, and long-distance transport.",
         difficulty: "Medium",
         rating: "⭐⭐⭐⭐"
       },
@@ -195,36 +182,29 @@ const translations = {
         id: 106,
         category: "transport",
         title: "Combine Errands into a Single Trip",
-        desc: "Cold engine starts consume twice as much fuel in the first few kilometers. Chaining multiple stops saves gas and time.",
+        desc: "Cold engine starts consume more fuel in the first few kilometers. Chaining multiple stops saves gas and time.",
         difficulty: "Easy",
         rating: "⭐⭐⭐⭐"
       }
     ],
 
-    // Daily Eco Pledge
     pledgeTitle: "Today's Eco Pledge",
     pledgeDesc: "Commit to one small conscious choice today for a cleaner planet tomorrow.",
     pledgeButton: "Sign Today's Pledge",
     pledgeSigned: "Pledge Signed for Today! 🌿",
 
-    // Footer
     footerQuote: "“The greatest threat to our planet is the belief that someone else will save it.” — Robert Swan",
-    footerBuiltWith: "Handcrafted with React & Vanilla CSS for clean, accessible sustainability tracking.",
-    footerRights: "Eco Living Hub. All rights reserved.",
+    footerBuiltWith: "Built with React and Vanilla CSS.",
     footerSourceCode: "GitHub Repository"
   },
 
   fi: {
-    // Header & Meta
     brandTitle: "Eco Living Hub",
     brandSubtitle: "Päivittäinen kumppanisi kestävään elämäntapaan ja hiilijalanjäljen seurantaan",
-    tagline: "Pienet päivittäiset teot luovat valtavan globaalin vaikutuksen.",
     langSwitch: "English",
-    currentLang: "FI",
     themeLight: "Vaalea",
     themeDark: "Tumma",
 
-    // Hero & Stats
     heroGreeting: "Tervetuloa vihreälle matkallesi",
     heroSubtitle: "Seuraa ekotapoja, laske hiilisäästöjäsi ja löydä käytännöllisiä vinkkejä.",
     statHabitsDone: "Tapoja suoritettu",
@@ -237,7 +217,6 @@ const translations = {
     levelPractitioner: "Eko-Suojelija 🌿",
     levelMaster: "Planeetan Mestari 🌍",
 
-    // Progress Bar
     progressTitle: "Päivän ekologinen edistyminen",
     progressCompleted: "suoritettu",
     msgZero: "Aloita päiväsi kuittaamalla ensimmäinen ekotekosi!",
@@ -246,7 +225,6 @@ const translations = {
     msgHigh: "Melkein valmista! Viimeistele päivän ekotavoitteet.",
     msgAll: "Loistavaa työtä! Kaikki tämän päivän ekotavat suoritettu! 🌟",
 
-    // Eco Habits Section
     habitsTitle: "Päivittäiset kestävät tavat",
     habitsSubtitle: "Merkitse toimet, joita olet toteuttanut tänään.",
     filterAll: "Kaikki tavat",
@@ -258,7 +236,6 @@ const translations = {
     habitPendingBadge: "Kesken",
     noHabitsMatch: "Valitulla suodattimella ei löytynyt tapoja.",
 
-    // Habits items
     habits: [
       {
         id: 1,
@@ -326,7 +303,6 @@ const translations = {
       }
     ],
 
-    // Carbon Calculator Section
     calcTitle: "Henkilökohtainen hiilijalanjälkilaskuri",
     calcSubtitle: "Arvioi viikoittaiset ja vuosittaiset päästö- ja rahasäästösi muuttamalla tottumuksiasi.",
     inputBikeKm: "Vihreä työmatka (km / vko kävellen, pyörällä tai julkisilla autoilun sijaan):",
@@ -340,9 +316,8 @@ const translations = {
     treesEquivalent: "Vastaa istutettua puuta",
     phoneChargesEquivalent: "Puhelimen latausta säästetty",
     carKmEquivalent: "Vältettyjä autokilometrejä",
-    calcDisclaimer: "*Arviot perustuvat eurooppalaisiin keskimääräisiin ympäristö- ja energiamittareihin.",
+    calcDisclaimer: "*Arviot perustuvat standardeihin keskimääräisiin ympäristömittareihin.",
 
-    // Eco Tips & Insights Section
     tipsTitle: "Ekologiset oppaat ja vinkit",
     tipsSubtitle: "Selaa käytännöllisiä vinkkejä jaettuna arjen helppoihin kategorioihin.",
     searchTipsPlaceholder: "Etsi vinkkejä avainsanalla...",
@@ -357,7 +332,6 @@ const translations = {
     helpfulThanks: "Tallennettu!",
     noTipsMatch: "Hakusanalla ei löytynyt vinkkejä. Kokeile toista sanaa!",
 
-    // Tip list
     tips: [
       {
         id: 101,
@@ -371,7 +345,7 @@ const translations = {
         id: 102,
         category: "food",
         title: "Jääkaapin FIFO-periaate (First In, First Out)",
-        desc: "Aseta uudet ostokset taakse ja vanhemmat etualalle. Ruokahävikki muodostaa noin 8-10 % maailman päästöistä.",
+        desc: "Aseta uudet ostokset taakse ja vanhemmat etualalle. Ruokahävikin vähentäminen säästää sekä rahaa että päästöjä.",
         difficulty: "Helppo",
         rating: "⭐⭐⭐⭐⭐"
       },
@@ -387,7 +361,7 @@ const translations = {
         id: 104,
         category: "home",
         title: "Vaihda LED-valaistukseen",
-        desc: "LED-lamput kuluttavat 75-80 % vähemmän sähköä kuin perinteiset hehkulamput ja kestävät jopa 25 kertaa pidempään.",
+        desc: "LED-lamput kuluttavat 75-80 % vähemmän sähköä kuin perinteiset hehkulamput ja kestävät huomattavasti pidempään.",
         difficulty: "Helppo",
         rating: "⭐⭐⭐⭐⭐"
       },
@@ -395,7 +369,7 @@ const translations = {
         id: 105,
         category: "food",
         title: "Suosi satokauden ja lähialueen tuotteita",
-        desc: "Satokauden kasvikset vaativat huomattavasti vähemmän kylmäsäilytystä, keinovalaistusta ja pitkiä kuljetuksia.",
+        desc: "Satokauden kasvikset vaativat vähemmän kylmäsäilytystä, lämmitystä ja pitkiä kuljetuksia.",
         difficulty: "Keskitaso",
         rating: "⭐⭐⭐⭐"
       },
@@ -403,30 +377,24 @@ const translations = {
         id: 106,
         category: "transport",
         title: "Yhdistä asiointimatkat yhdeksi lenkiksi",
-        desc: "Kylmä auton moottori kuluttaa kaksinkertaisesti polttoainetta ensimmäisten kilometrien aikana. Matkojen yhdistely säästää polttoainetta ja aikaa.",
+        desc: "Kylmä moottori kuluttaa enemmän polttoainetta. Matkojen yhdistely säästää polttoainetta ja aikaa.",
         difficulty: "Helppo",
         rating: "⭐⭐⭐⭐"
       }
     ],
 
-    // Daily Eco Pledge
     pledgeTitle: "Päivän ekolupaus",
     pledgeDesc: "Sitoudu tänään yhteen pieneen tekoon puhtaamman huomisen puolesta.",
     pledgeButton: "Allekirjoita päivän lupaus",
     pledgeSigned: "Lupaus allekirjoitettu tälle päivälle! 🌿",
 
-    // Footer
     footerQuote: "“Suurin uhka planeetallemme on uskomus, että joku muu pelastaa sen.” — Robert Swan",
-    footerBuiltWith: "Rakennettu Reactilla ja Vanilla CSS:llä selkeää ja saavutettavaa kestävän elämän seurantaa varten.",
-    footerRights: "Eco Living Hub. Kaikki oikeudet pidätetään.",
+    footerBuiltWith: "Rakennettu Reactilla ja Vanilla CSS:llä.",
     footerSourceCode: "GitHub-lähdekoodi"
   }
 };
 
-/**
- * Header Component
- * Contains Logo, Tagline, Language Switcher, and Theme Toggle.
- */
+// Header component with title, language switcher and theme toggle
 function Header({ language, onToggleLanguage, theme, onToggleTheme, t }) {
   return (
     <header className="site-header">
@@ -442,7 +410,6 @@ function Header({ language, onToggleLanguage, theme, onToggleTheme, t }) {
         </div>
 
         <div className="header-controls">
-          {/* Language Switcher Button */}
           <button
             type="button"
             className="control-btn lang-toggle-btn"
@@ -454,7 +421,6 @@ function Header({ language, onToggleLanguage, theme, onToggleTheme, t }) {
             <span className="lang-name">{t.langSwitch}</span>
           </button>
 
-          {/* Theme Switcher Button */}
           <button
             type="button"
             className="control-btn theme-toggle-btn"
@@ -475,14 +441,10 @@ function Header({ language, onToggleLanguage, theme, onToggleTheme, t }) {
   );
 }
 
-/**
- * ProgressBar Component
- * Visual animated meter that reflects completion percentage and motivational feedback.
- */
+// Progress Bar showing habit completion percentage
 function ProgressBar({ completedCount, totalCount, t }) {
   const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  // Dynamic feedback message based on completion tier
   const getMotivationalMessage = () => {
     if (percentage === 0) return t.msgZero;
     if (percentage < 35) return t.msgLow;
@@ -517,12 +479,8 @@ function ProgressBar({ completedCount, totalCount, t }) {
   );
 }
 
-/**
- * Hero Overview / Stats Component
- * Displays summary cards for total habits completed, calculated daily CO2 savings, and status.
- */
+// Summary overview cards for stats
 function HeroStats({ completedCount, totalCount, co2SavedToday, t }) {
-  // Determine user level based on habits completed
   const getEcoLevel = () => {
     if (completedCount >= 6) return t.levelMaster;
     if (completedCount >= 3) return t.levelPractitioner;
@@ -576,10 +534,7 @@ function HeroStats({ completedCount, totalCount, co2SavedToday, t }) {
   );
 }
 
-/**
- * EcoHabits Component
- * Displays interactive daily habits list with checkboxes, category badges, and quick actions.
- */
+// Interactive habits checklist component
 function EcoHabits({
   habits,
   completedHabitIds,
@@ -588,15 +543,15 @@ function EcoHabits({
   onResetAll,
   t
 }) {
-  const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'pending' | 'completed'
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  // Filter habits dynamically using JavaScript array filter
+  // Filter habits using JavaScript array filter method
   const filteredHabits = useMemo(() => {
     return habits.filter(habit => {
       const isDone = completedHabitIds.includes(habit.id);
       if (activeFilter === 'completed') return isDone;
       if (activeFilter === 'pending') return !isDone;
-      return true; // 'all'
+      return true;
     });
   }, [habits, completedHabitIds, activeFilter]);
 
@@ -608,7 +563,6 @@ function EcoHabits({
           <p className="section-subtitle">{t.habitsSubtitle}</p>
         </div>
 
-        {/* Quick action buttons */}
         <div className="habits-action-buttons">
           <button
             type="button"
@@ -627,7 +581,6 @@ function EcoHabits({
         </div>
       </div>
 
-      {/* Filter Tabs */}
       <div className="filter-tabs-row" role="tablist">
         <button
           type="button"
@@ -652,7 +605,6 @@ function EcoHabits({
         </button>
       </div>
 
-      {/* Habits Grid / List mapped dynamically */}
       <div className="habits-grid">
         {filteredHabits.length > 0 ? (
           filteredHabits.map(habit => {
@@ -710,22 +662,14 @@ function EcoHabits({
   );
 }
 
-/**
- * EcoCalculator Component
- * Interactive form handling carbon and financial savings estimation based on user inputs.
- */
+// Carbon and financial savings calculator component
 function EcoCalculator({ t }) {
-  // Controlled input states
   const [commuteKm, setCommuteKm] = useState(25);
   const [plantMeals, setPlantMeals] = useState(7);
   const [reusableItems, setReusableItems] = useState(5);
   const [ecoActions, setEcoActions] = useState(6);
 
-  // Carbon and cost savings calculation formula
-  // - 1 km sustainable commute vs average petrol car saves ~0.17 kg CO2 & ~0.15€ in gas
-  // - 1 plant-based meal vs meat meal saves ~1.5 kg CO2 & ~1.20€ in groceries
-  // - 1 reusable bag/bottle saves ~0.08 kg CO2 & ~0.30€
-  // - 1 eco-wash / energy action saves ~0.6 kg CO2 & ~0.50€
+  // Weekly and yearly calculations
   const weeklyCo2 = useMemo(() => {
     return (commuteKm * 0.17) + (plantMeals * 1.5) + (reusableItems * 0.08) + (ecoActions * 0.6);
   }, [commuteKm, plantMeals, reusableItems, ecoActions]);
@@ -737,12 +681,9 @@ function EcoCalculator({ t }) {
     return Math.round(weeklyCash * 52);
   }, [commuteKm, plantMeals, reusableItems, ecoActions]);
 
-  // Equivalencies:
-  // 1 mature urban tree absorbs ~22 kg CO2 per year
+  // Real world equivalents
   const treesPlanted = useMemo(() => Math.max(1, Math.round(yearlyCo2 / 22)), [yearlyCo2]);
-  // 1 smartphone charge produces ~0.008 kg CO2
   const phoneCharges = useMemo(() => Math.round(weeklyCo2 / 0.008), [weeklyCo2]);
-  // 1 km petrol car driving = 0.17 kg CO2
   const carKmSaved = useMemo(() => Math.round(yearlyCo2 / 0.17), [yearlyCo2]);
 
   return (
@@ -753,9 +694,7 @@ function EcoCalculator({ t }) {
       </div>
 
       <div className="calculator-layout-grid">
-        {/* Input Form Column */}
         <div className="calc-inputs-column">
-          {/* Commute Slider */}
           <div className="calc-input-group">
             <div className="calc-label-row">
               <label htmlFor="commute-range" className="calc-label">
@@ -779,7 +718,6 @@ function EcoCalculator({ t }) {
             </div>
           </div>
 
-          {/* Plant Meals Slider */}
           <div className="calc-input-group">
             <div className="calc-label-row">
               <label htmlFor="plant-meals-range" className="calc-label">
@@ -803,7 +741,6 @@ function EcoCalculator({ t }) {
             </div>
           </div>
 
-          {/* Reusable Items Input */}
           <div className="calc-input-group">
             <div className="calc-label-row">
               <label htmlFor="reusable-range" className="calc-label">
@@ -827,7 +764,6 @@ function EcoCalculator({ t }) {
             </div>
           </div>
 
-          {/* Eco Actions Input */}
           <div className="calc-input-group">
             <div className="calc-label-row">
               <label htmlFor="eco-actions-range" className="calc-label">
@@ -852,7 +788,6 @@ function EcoCalculator({ t }) {
           </div>
         </div>
 
-        {/* Results / Impact Summary Column */}
         <div className="calc-results-column">
           <div className="results-card">
             <h3 className="results-card-title">{t.calcResultsTitle}</h3>
@@ -907,16 +842,12 @@ function EcoCalculator({ t }) {
   );
 }
 
-/**
- * EcoTips Component
- * Shows tips dynamically filtered with array methods (filter and map), category tabs, and search.
- */
+// Categorized Eco Tips component
 function EcoTips({ tips, t }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [helpfulSet, setHelpfulSet] = useState(new Set());
 
-  // Toggle helpful rating
   const toggleHelpful = (tipId) => {
     setHelpfulSet(prev => {
       const next = new Set(prev);
@@ -929,7 +860,7 @@ function EcoTips({ tips, t }) {
     });
   };
 
-  // Filter tips using array filter based on category & search term
+  // Filter tips by category and keyword search using .filter()
   const filteredTips = useMemo(() => {
     return tips.filter(tip => {
       const matchesCategory = selectedCategory === 'all' || tip.category === selectedCategory;
@@ -946,9 +877,7 @@ function EcoTips({ tips, t }) {
         <p className="section-subtitle">{t.tipsSubtitle}</p>
       </div>
 
-      {/* Filter and Search Controls */}
       <div className="tips-controls-row">
-        {/* Category Filter Pills */}
         <div className="category-pills-wrap" role="group" aria-label="Filter by category">
           <button
             type="button"
@@ -980,7 +909,6 @@ function EcoTips({ tips, t }) {
           </button>
         </div>
 
-        {/* Real-time Search Box */}
         <div className="search-input-wrapper">
           <span className="search-icon" aria-hidden="true">🔍</span>
           <input
@@ -1004,7 +932,6 @@ function EcoTips({ tips, t }) {
         </div>
       </div>
 
-      {/* Tips Grid */}
       <div className="tips-grid">
         {filteredTips.length > 0 ? (
           filteredTips.map(tip => {
@@ -1047,10 +974,7 @@ function EcoTips({ tips, t }) {
   );
 }
 
-/**
- * DailyPledge Component
- * Interactive daily commitment feature.
- */
+// Daily commitment pledge component
 function DailyPledge({ t }) {
   const [isPledged, setIsPledged] = useState(false);
 
@@ -1074,10 +998,7 @@ function DailyPledge({ t }) {
   );
 }
 
-/**
- * Footer Component
- * Accessible, clean footer with eco quote, navigation, and GitHub link.
- */
+// Clean footer component
 function Footer({ language, onToggleLanguage, t }) {
   return (
     <footer className="site-footer">
@@ -1116,47 +1037,44 @@ function Footer({ language, onToggleLanguage, t }) {
   );
 }
 
-/**
- * Main Application Component (App)
- * Handles root state, theme syncing, habits persistence, and overall layout.
- */
+// Main application component
 export default function App() {
-  // State 1: Active Language ('en' | 'fi')
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('eco_hub_lang') || 'en';
-  });
-
-  // State 2: Theme ('light' | 'dark')
+  // Theme state with local storage persistence
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('eco_hub_theme') || 'light';
   });
 
-  // State 3: Completed habits IDs array
-  const [completedHabits, setCompletedHabits] = useState(() => {
-    const saved = localStorage.getItem('eco_hub_completed_habits');
-    return saved ? JSON.parse(saved) : [1, 2]; // Pre-select a couple for a welcoming first impression
+  // Language state ('en' or 'fi')
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem('eco_hub_lang') || 'en';
   });
 
-  // Current translations based on selected language
+  // Completed habits state
+  const [completedHabits, setCompletedHabits] = useState(() => {
+    const saved = localStorage.getItem('eco_hub_completed_habits');
+    return saved ? JSON.parse(saved) : [1, 2];
+  });
+
+  // Current translation dictionary
   const t = useMemo(() => translations[language] || translations.en, [language]);
 
-  // Synchronize Theme with Document Root and LocalStorage
+  // Sync theme changes to html data-theme attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('eco_hub_theme', theme);
   }, [theme]);
 
-  // Synchronize Language with LocalStorage
+  // Sync language selection
   useEffect(() => {
     localStorage.setItem('eco_hub_lang', language);
   }, [language]);
 
-  // Synchronize Completed Habits with LocalStorage
+  // Sync completed habits
   useEffect(() => {
     localStorage.setItem('eco_hub_completed_habits', JSON.stringify(completedHabits));
   }, [completedHabits]);
 
-  // Handler: Toggle single habit completed / uncompleted
+  // Habit handlers
   const handleToggleHabit = (habitId) => {
     setCompletedHabits(prev => {
       if (prev.includes(habitId)) {
@@ -1167,28 +1085,26 @@ export default function App() {
     });
   };
 
-  // Handler: Mark all habits as completed
   const handleMarkAllHabits = () => {
     const allIds = t.habits.map(h => h.id);
     setCompletedHabits(allIds);
   };
 
-  // Handler: Reset all habits
   const handleResetHabits = () => {
     setCompletedHabits([]);
   };
 
-  // Handler: Toggle Language
+  // Switch language between English and Finnish
   const handleToggleLanguage = () => {
     setLanguage(prev => (prev === 'en' ? 'fi' : 'en'));
   };
 
-  // Handler: Toggle Theme
+  // Switch between light and dark theme
   const handleToggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Compute total CO2 saved from today's completed habits
+  // Calculate total CO2 saved from today's completed habits
   const co2SavedToday = useMemo(() => {
     return t.habits
       .filter(h => completedHabits.includes(h.id))
@@ -1197,7 +1113,6 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      {/* 1. Header */}
       <Header
         language={language}
         onToggleLanguage={handleToggleLanguage}
@@ -1206,9 +1121,7 @@ export default function App() {
         t={t}
       />
 
-      {/* Main Content Area */}
       <main className="main-content-container">
-        {/* 2. Hero & Quick Stats */}
         <HeroStats
           completedCount={completedHabits.length}
           totalCount={t.habits.length}
@@ -1216,14 +1129,12 @@ export default function App() {
           t={t}
         />
 
-        {/* 3. Progress Bar */}
         <ProgressBar
           completedCount={completedHabits.length}
           totalCount={t.habits.length}
           t={t}
         />
 
-        {/* 4. Eco Habits Checklist (Interactive Habits List) */}
         <EcoHabits
           habits={t.habits}
           completedHabitIds={completedHabits}
@@ -1233,17 +1144,13 @@ export default function App() {
           t={t}
         />
 
-        {/* 5. Carbon & Financial Savings Calculator */}
         <EcoCalculator t={t} />
 
-        {/* 6. Dynamic Eco Tips & Insights */}
         <EcoTips tips={t.tips} t={t} />
 
-        {/* 7. Daily Eco Pledge */}
         <DailyPledge t={t} />
       </main>
 
-      {/* 8. Footer */}
       <Footer
         language={language}
         onToggleLanguage={handleToggleLanguage}
