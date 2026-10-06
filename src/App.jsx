@@ -1113,6 +1113,15 @@ export default function App() {
 
   return (
     <div className="app-layout">
+      {/* Subtle ambient floating leaves background */}
+      <div className="ambient-leaf-bg" aria-hidden="true">
+        <span className="floating-leaf leaf-1">🍃</span>
+        <span className="floating-leaf leaf-2">🌱</span>
+        <span className="floating-leaf leaf-3">🌿</span>
+        <span className="floating-leaf leaf-4">🍃</span>
+        <span className="floating-leaf leaf-5">🌱</span>
+      </div>
+
       <Header
         language={language}
         onToggleLanguage={handleToggleLanguage}
