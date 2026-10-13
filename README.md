@@ -1,143 +1,199 @@
+# Eco Living Hub 🌿 - Kestävän arjen ekotapojen seurantatyökalu
 
-Eco Living Hub - Projekti- ja koodiopas
-Live Demo: https://fahad11abbas.github.io/eco-living-hub/
-Source Code: https://github.com/FAHAD11ABBAS/eco-living-hub
+Tämä projekti on ammatillisen perustutkinnon tutkinnon osan **"Ohjelmistokehittäjänä toimiminen" (45 OSP)** näyttötyö. Sovellus auttaa käyttäjää seuraamaan arjen ekologisia tapoja, laskemaan hiilipäästö- ja rahasäästöjä sekä saamaan ajantasaisia, sääolosuhteisiin mukautettuja liikkumis- ja toimintasuosituksia.
 
-1. Projektin yleiskatsaus
-Tämä on koulun näyttötyöprojektini. Se on yhden sivun verkkosovellus, joka on rakennettu Reactilla ja puhtaalla CSS:llä. Se auttaa käyttäjiä seuraamaan ekologisia tapoja, laskemaan hiili- ja rahasäästöjä sekä lukemaan ekovinkkejä helposti.
+---
+- 🔗 **Live-demo (GitHub Pages):** [https://fahad11abbas.github.io/eco-living-hub/](https://fahad11abbas.github.io/eco-living-hub/)
+- 💻 **Lähdekoodi (GitHub):** [https://github.com/FAHAD11ABBAS/eco-living-hub](https://github.com/FAHAD11ABBAS/eco-living-hub)
+---
 
-2. Käyttöliittymän ominaisuudet ja taustalogiikka
-Yläpalkki ja asetukset:
+## 1. Sovelluksen keskeiset ominaisuudet
 
-Mitä se tekee: Näyttää otsikon, tumman/vaalean tilan vaihtimen sekä englannin ja suomen kielen valitsimen.
+1. **Sääperusteinen ekosuositus (Säärajapinta)**
+   - Hakee avoimesta Open-Meteo-rajapinnasta Helsingin tulevan tunnin ennusteen (lämpötila, tuulen nopeus ja 1 tunnin sademäärä).
+   - Laskee automaattisesti arjen suosituksen sääntöhierarkian mukaisesti.
+   - Lataustilat ja virhetilanteiden hallinta ("Haetaan säätietoja...", "Yritä uudelleen" -painike).
 
-Miksi: Antaa nopean pääsyn käyttöliittymän teemoihin ja kieliin mistä tahansa.
+2. **Omien ekotapojen hallinta (CRUD) & Tietojen pysyvyys**
+   - Käyttäjä voi luoda, lukea, muokata ja poistaa omia tapoja (otsikko, kuvaus, kategoria, CO₂-säästö ja kuvake).
+   - Tiedot tallennetaan selaimeen (`localStorage`), josta ne latautuvat sivun uudelleenlatauksessa ilman tietokantapalvelinta.
+   - JSON-korruptionesto: sovellus ei kaadu, vaikka selaimen tallennustila sisältäisi virheellistä dataa.
+   - Suomenkieliset toast-ilmoitukset onnistuneista toiminnoista ja virheistä.
 
-Tilastot ja edistymispalkki:
+3. **Päiväkohtainen seuranta & Dynaaminen eko-putki (Streak)**
+   - Suoritukset kirjataan kalenteripäivittäin muodossa `YYYY-MM-DD`.
+   - Samaa tekoa ei voi kuitata useampaan kertaan samalle päivälle.
+   - Putki lasketaan dynaamisesti: vähintään yksi suoritus per päivä pitää putken käynnissä. Välipäivä nollaa putken, mutta kuluva kesken oleva päivä ei katkaise eilistä ansaittua putkea.
 
-Mitä se tekee: Näyttää yhteenverolaskurit ja animoidun edistymispalkin, joka täyttyy sitä mukaa kun tapoja merkitään tehdyiksi.
+4. **7 päivän historiakaavio & Saavutettavuus**
+   - Graafinen viikkoseuranta toteutettu `recharts`-kirjastolla.
+   - Mahdollisuus vaihtaa graafisen kaavion ja esteettömän taulukkonäkymän välillä (ruudunlukijaystävällinen HTML-taulukko).
 
-Miksi: Antaa visuaalista motivaatiota ja reaaliaikaista palautetta.
+5. **Hiilijalanjälki- ja säästölaskuri**
+   - Interaktiiviset säätimet työmatkaliikkumiselle, kasvisaterioille, muovin välttämiselle ja energiansäästölle.
+   - Korjattu nollalogiikka: kun säästöt ovat 0, puu- ja rahasäästöt näyttävät tasan 0 ilman ylimääräisiä vääristymiä.
 
-Päivittäinen ekotottumusten tarkistuslista:
+6. **Monikielisyys (i18n)**
+   - Ensisijainen ja oletuskieli on suomi (`fi`).
+   - Käyttäjä voi vaihtaa kielen suomen ja englannin välillä milloin tahansa otsikon painikkeesta.
 
-Mitä se tekee: Luettelo vihreistä teoista valintaruuduilla ja suodattimilla (Kaikki, Tehtävät, Valmiit).
+---
 
-Miksi: Auttaa käyttäjiä seuraamaan päivittäisiä tehtäviä ja päivittää hiilidioksidipisteet heti, kun ne valitaan.
+## 2. Sääsuosituksen päätössäännöt (Hierarkia)
 
-Ekolaskuri:
+Sovellus noutaa tulevan tunnin ennustetiedot ja soveltaa seuraavaa hierarkiaa:
 
-Mitä se tekee: Interaktiiviset liukusäätimet työmatka- ja ruokavalinnoille, jotka laskevat viikoittaiset ja vuotuiset hiilidioksidipäästöt sekä euroina (€) säästetyt rahat.
+1. **Sade $\ge 0.2$ mm TAI Tuuli $\ge 8.0$ m/s:**
+   - Suositus: *Lajittele jätteet sisätiloissa* (Sisätoimi).
+   - Perustelu: Märkä tai myrskyinen sää ohjaa tekemään ekotekoja turvallisesti ja mukavasti sisätiloissa (esim. lajittelu, lepotilalaitteiden sammutus, hävikkiruoka).
+2. **Muuten, jos Lämpötila $\ge 5.0$ °C:**
+   - Suositus: *Kävely tai pyöräily* (Aktiivinen liikkuminen).
+   - Perustelu: Mieto ulkoilusää soveltuu lihasvoimalla liikkumiseen, mikä vähentää suoraan polttoainepäästöjä.
+3. **Muussa tapauksessa (Lämpötila $< 5.0$ °C):**
+   - Suositus: *Käytä joukkoliikennettä autoilun sijaan* (Joukkoliikenne).
+   - Perustelu: Kylmällä säällä joukkoliikenne on ekologinen ja energiatehokas vaihtoehto yksityisautoilulle.
 
-Miksi: Antaa käyttäjille nähdä numeerisen todisteen säästöistään reaaliajassa.
+---
 
-Luokitellut ekovinkit ja haku:
+## 3. Historiakaavion kirjastovalinta (Recharts)
 
-Mitä se tekee: Vinkkilista kategoria painikkeilla (Koti, Liikenne, Ruoka) ja reaaliaikaisella hakukentällä.
+Projektissa käytetään `recharts`-kirjastoa 7 päivän toteutuneiden ekotekojen visualisointiin.
 
-Miksi: Mahdollistaa nopean haun ja suodatuksen ilman selaamista.
+### Plussat:
+- **Deklaratiivinen React-integraatio:** Komponenttipohjainen rakenne (`<ResponsiveContainer>`, `<BarChart>`, `<Bar>`, `<Tooltip>`) sopii luontevasti Reactin tilanhallintaan.
+- **Responsiivisuus:** Mukautuu automaattisesti eri näytön leveyksiin mobiililaitteista suuriin näyttöihin.
+- **Kevyt konfiguraatio:** Selkeät akselit, legendit ja visuaalisesti yhdenmukainen teemoitus CSS-muuttujien kanssa.
 
-Tausta- ja teemasuunnittelu:
+### Miinukset ja ratkaisut:
+- **Paketin koko:** Recharts kasvattaa koontipaketin kokoa suhteessa perinteiseen Canvas-toteutukseen.
+- **Saavutettavuus:** SVG-graafit voivat olla hankalia ruudunlukijoille. Tämän vuoksi sovellukseen toteutettiin erillinen **Taulukkonäkymä (Accessible Table View)**, jolla tiedot voi lukea semanttisena HTML-taulukkona.
 
-Mitä se tekee: Käyttää puhtaita CSS-muuttujia sujuviin vaaleisiin/tummiin teemoihin ja lempeisiin lehtianimaatioihin taustalla.
+---
 
-Miksi: Pitää sovelluksen kevyenä, visuaalisesti houkuttelevana ja itse rakennettuna ilman raskaita käyttöliittymäkirjastoja.
+## 4. Tietoturva ja syötteiden validointi (Security Audit)
 
-3. Tekniset valinnat ja miksi käytin niitä
-React-komponentit: Jaoitin sovelluksen pieniin, uudelleenkäytettäviin moduulitiedostoihin, jotta koodi pysyy puhtaana ja järjestyksessä.
+Sovellukseen on toteutettu seuraavat tietoturvakäytännöt:
+- **Ei API-avainten vuotamista:** Sääennuste hyödyntää avointa Open-Meteo-rajapintaa, joka ei vaadi salaista avainta koodissa tai selaimen pyynnöissä.
+- **Syötteiden sanitointi (XSS-esto):** Kaikki käyttäjän syöttämät tekstit siivotaan HTML-tageista ja erikoismerkeistä (`sanitizeText`).
+- **Merkkimäärärajoitukset:** Tavan otsikko on rajattu enintään 60 merkkiin ja kuvaus enintään 160 merkkiin. Tyhjiä syötteitä ei hyväksytä.
+- **Numeerinen validointi:** CO₂-säästöarvot rajataan sallitulle välille (0.1–25 kg).
+- **Selaintallennuksen virheensieto:** `safeGetStorage` ja `safeSetStorage` ottavat kiinni mahdolliset `SyntaxError`- tai `QuotaExceededError`-virheet ja estävät sovelluksen kaatumisen.
+- **React Error Boundary:** Odottamattomat renderöintivirheet napataan virherajalla, joka tarjoaa käyttäjälle suomenkielisen palautuspainikkeen.
 
-useState-koukku: Käytetään dynaamisten muutosten, kuten tapojen tarkistamisen, laskimen liukusäätimien päivittämisen, hakusanojen kirjoittamisen sekä teemojen ja kielien vaihtamisen hallintaan.
+---
 
-useEffect-koukku ja localStorage: Käytetään käyttäjän asetuksien (teema, kieli ja suoritetut tavat) tallentamiseen, jotta tiedot eivät katoa sivua päivitettäessä.
+## 5. Testaus ja tulokset
 
-Taulukkomenetelmät (.map, .filter, .reduce):
+Projektissa on kattavat yksikkötestit toteutettuna **Vitest**-testikehyksellä.
 
-.map() listojen dynaamiseen esittämiseen.
+Testit kattavat:
+1. **Sääsäännöt (`tests/weatherRules.test.js`):** Raja-arvot sateelle (0.2 mm), tuulelle (8 m/s), lämpötilalle (5 °C) sekä kielivalinnoille.
+2. **Dynaaminen putki (`tests/streakCalculator.test.js`):** Peräkkäiset päivät, välipäivät, kuluvan päivän keskeneräisyyden huomiointi ja useat suoritukset samana päivänä.
+3. **Hiililaskuri (`tests/carbonCalculations.test.js`):** Nollalogiikan varmistus (0 kg CO₂ = 0 puuta) ja laskentakaavojen oikeellisuus.
+4. **Sanitointi (`tests/sanitizer.test.js`):** HTML-tagien poisto, pituusrajat ja virheilmoitukset.
+5. **Tallennuksen vikasietoisuus (`tests/storageHelper.test.js`):** Korruptoituneen JSON-datan sieto selaimen muistissa.
 
-.filter() tapojen ja vinkkien lajittelemiseen tilan, kategorian tai haun mukaan.
+Aja testit komentoriviltä:
+```bash
+npm test
+```
 
-.reduce() päivittäisten hiilidioksidipisteiden kokonaismäärän laskemiseen.
+### Testitulokset:
+```text
+ ✓ tests/weatherRules.test.js (9 tests)
+ ✓ tests/streakCalculator.test.js (8 tests)
+ ✓ tests/carbonCalculations.test.js (3 tests)
+ ✓ tests/sanitizer.test.js (6 tests)
+ ✓ tests/storageHelper.test.js (3 tests)
 
+ Test Files  5 passed (5)
+      Tests  29 passed (29)
+```
 
+---
 
+## 6. Asennus ja käynnistys paikallisesti
 
+### Vaatimukset:
+- Node.js (v18 tai uudempi)
+- npm
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Eco Living Hub 🌿 - Project & Code Guide
-
-Live Demo: https://fahad11abbas.github.io/eco-living-hub/  
-Source Code: https://github.com/FAHAD11ABBAS/eco-living-hub  
-
-## 1. Project Overview
-This is my school skill demo project. It is a single-page web app built with React and Vanilla CSS. It helps users track green habits, calculate carbon and money savings, and read eco tips easily.
-
-## 2. Frontend Features & Background Logic
-- **Header & Settings:** 
-  - *What it does:* Shows the title, Dark/Light mode toggle, and English/Finnish language switch.
-  - *Why:* Gives quick access to interface themes and languages from anywhere.
-- **Hero Stats & Progress Bar:** 
-  - *What it does:* Shows summary counters and an animated progress bar that fills up as habits are checked.
-  - *Why:* Gives visual motivation and real-time feedback.
-- **Daily Eco Habits Checklist:** 
-  - *What it does:* A list of green actions with checkboxes and filters (All, To Do, Completed).
-  - *Why:* Helps users track daily tasks and instantly updates CO2 points when checked.
-- **Eco Calculator:** 
-  - *What it does:* Interactive sliders for commute and food choices that calculate weekly/yearly CO2 and money saved in Euros (€).
-  - *Why:* Lets users see numerical proof of their savings in real-time.
-- **Categorized Eco Tips & Search:** 
-  - *What it does:* Tips list with category buttons (Home, Transport, Food) and a live search box.
-  - *Why:* Allows quick searching and filtering without scrolling.
-- **Background & Theme Design:** 
-  - *What it does:* Uses pure CSS variables for smooth light/dark themes and gentle floating leaf animations in the background.
-  - *Why:* Keeps the app lightweight, visually appealing, and handcrafted without heavy UI frameworks.
-
-## 3. Technical Choices & Why I Used Them
-- **React Components:** Split the app into small, reusable modular files to keep the code clean and organized.
-- **useState Hook:** Used to handle dynamic changes like checking habits, updating calculator sliders, typing search keywords, and switching themes/languages.
-- **useEffect Hook & localStorage:** Used to save user preferences (theme, language, and completed habits) so data isn't lost on page reload.
-- **Array Methods (.map, .filter, .reduce):** 
-  - `.map()` to render lists dynamically.
-  - `.filter()` to sort habits and tips by status, category, or search.
-  - `.reduce()` to calculate total daily CO2 points.
-
-
-## 4. How to Run Locally on PC
-1. Clone the repository:
+### Vaiheet:
+1. Kloonaa repositorio:
    ```bash
    git clone https://github.com/FAHAD11ABBAS/eco-living-hub.git
    ```
-2. Open the folder:
+2. Siirry projektikansioon:
    ```bash
    cd eco-living-hub
    ```
-3. Install dependencies:
+3. Asenna riippuvuudet:
    ```bash
    npm install
    ```
-4. Run the development server:
+4. Käynnistä kehityspalvelin:
    ```bash
    npm run dev
    ```
-5. Open `http://localhost:5173/` in your browser.
+5. Avaa selain osoitteessa `http://localhost:5173/eco-living-hub/`.
 
-## 5. Author
-Abbas Alfarttoosi (FAHAD11ABBAS)
+### Muut komennot:
+- **Testien suoritus:** `npm test`
+- **Tuotantoversion kääntäminen:** `npm run build`
+- **Julkaisu GitHub Pagesiin:** `npm run deploy`
+
+---
+
+## 7. Projektirakenne
+
+```text
+eco-living-hub/
+├── public/                 # Staattiset tiedostot ja favicon
+├── src/
+│   ├── components/         # Modulaariset käyttöliittymäkomponentit
+│   │   ├── Header.jsx
+│   │   ├── HeroStats.jsx
+│   │   ├── ProgressBar.jsx
+│   │   ├── WeatherWidget.jsx      # Sääsuositus ja rajapintaintegraatio
+│   │   ├── EcoHabits.jsx          # Tapojen tarkistuslista ja CRUD
+│   │   ├── HabitModal.jsx         # Omien tapojen luonti- ja muokkauslomake
+│   │   ├── HistoryChart.jsx       # 7 päivän Recharts-kaavio ja taulukko
+│   │   ├── EcoCalculator.jsx      # Hiili- ja säästölaskuri
+│   │   ├── EcoTips.jsx            # Vinkkilista ja haku
+│   │   ├── DailyPledge.jsx        # Päivän ekolupaus
+│   │   ├── NotificationToast.jsx  # Toast-ilmoitukset suomeksi
+│   │   ├── ErrorBoundary.jsx      # Virheraja odottamattomille virheille
+│   │   └── Footer.jsx
+│   ├── services/           # Ulkoiset palvelut ja tallennus
+│   │   ├── weatherService.js      # Open-Meteo rajapintakutsut
+│   │   └── storageService.js      # localStorage CRUD ja JSON-suojaus
+│   ├── utils/              # Apu- ja laskentafunktiot
+│   │   ├── weatherRules.js        # Sääpäätöshierarkia
+│   │   ├── streakCalculator.js    # Dynaaminen putkilaskentalogiikka
+│   │   ├── carbonCalculations.js  # Päästöjen ja vastineiden laskenta
+│   │   ├── sanitizer.js           # Syötteiden sanitointi ja validointi
+│   │   └── dateHelper.js          # Kalenteripäivien käsittely
+│   ├── i18n/
+│   │   └── translations.js        # Suomen- ja englanninkieliset käännökset
+│   ├── App.css             # Vanilla CSS -tyylit ja teemamuuttujat
+│   ├── App.jsx             # Pääsovelluskomponentti
+│   └── main.jsx
+├── tests/                  # Automatisoidut Vitest-yksikkötestit
+│   ├── weatherRules.test.js
+│   ├── streakCalculator.test.js
+│   ├── carbonCalculations.test.js
+│   ├── sanitizer.test.js
+│   └── storageHelper.test.js
+├── index.html
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## 8. Tekijä
+
+**Abbas Alfarttoosi**  
+GitHub: [FAHAD11ABBAS](https://github.com/FAHAD11ABBAS)  
+Koulutusala: Tieto- ja viestintätekniikan perustutkinto (Ohjelmistokehittäjä)  
+Tutkinnon osa: Ohjelmistokehittäjänä toimiminen (45 OSP)
