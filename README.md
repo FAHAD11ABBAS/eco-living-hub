@@ -190,10 +190,12 @@ eco-living-hub/
 ```
 
 ---
+8. Tekijä
+Abbas Alfarttoosi (FAHAD11ABBAS)
+Koulutusala: Tieto- ja viestintätekniikan perustutkinto (Ohjelmistokehittäjä)
+Tutkinnon osa: Ohjelmistokehittäjänä toimiminen (45 OSP)
 
-## 8. Tekijä
-
-**Abbas Alfarttoosi**  
+Huomautus: Koodi ja ratkaisut ovat opiskelijan toteuttamia. AI-työkalua on käytetty apuna suomen kielen käännöksissä, tekstien ja koodin tarkistuksessa sekä konsultoinnissa työsuunnitelmassa ja ongelmatilanteissa.
 GitHub: [FAHAD11ABBAS](https://github.com/FAHAD11ABBAS)  
 Koulutusala: Tieto- ja viestintätekniikan perustutkinto (Ohjelmistokehittäjä)  
 Tutkinnon osa: Ohjelmistokehittäjänä toimiminen (45 OSP)
