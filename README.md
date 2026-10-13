@@ -1,8 +1,21 @@
-# Eco Living Hub 🌿 - Kestävän arjen ekotapojen seurantatyökalu
+# Eco Living Hub 🌿
 
-Tämä projekti on ammatillisen perustutkinnon tutkinnon osan **"Ohjelmistokehittäjänä toimiminen" (45 OSP)** näyttötyö. Sovellus auttaa käyttäjää seuraamaan arjen ekologisia tapoja, laskemaan hiilipäästö- ja rahasäästöjä sekä saamaan ajantasaisia, sääolosuhteisiin mukautettuja liikkumis- ja toimintasuosituksia.
+**Eco Living Hub** on moderni ja interaktiivinen web-sovellus, joka auttaa käyttäjiä omaksumaan kestävän kehityksen mukaisia ekotapoja jokapäiväisessä elämässään. Sovellus yhdistää reaaliaikaisen säädatan, kustomoitavan ekotapojen hallinnan (CRUD), dynaamisen aktiivisuusseurannan sekä visuaaliset analyysityökalut helppokäyttöiseksi ja innostavaksi kokonaisuudeksi.
+
+Sovelluksen avulla voit seurata omia ekotekojasi, laskea konkreettisia hiilijalanjäljen ja rahasäästöjen vaikutuksia sekä saada sääolosuhteisiin mukautettuja liikkumis- ja toimintasuosituksia joka päivä.
 
 ---
+
+### 🚀 Keskeiset ominaisuudet
+
+- **🌤️ Sääpohjaiset suositukset:** Integroitu Open-Meteo API -rajapintaan, joka antaa reaaliaikaisia suosituksia sään mukaan (esim. pyöräily, kävely, energiansäästö).
+- **📝 Ekotapojen hallinta (CRUD):** Luo, muokkaa, poista ja seuraa omia päivittäisiä ekotapojasi.
+- **💾 Paikallinen tallennus:** Tiedot tallentuvat turvallisesti selaimen muistiin (localStorage) JSON-korruptionestolla.
+- **🔥 Dynaaminen aktiivisuusseuranta:** Laske putket (Streak) tarkasti kalenteripäivien mukaan.
+- **📊 Visuaalinen analyysi:** Havainnollista edistymistäsi selkeillä Recharts-kaavioilla ja saavutettavalla taulukkonäkymällä.
+- **🔒 Automaattinen testaus ja tietoturva:** 29 automatisoitua Vitest-yksikkötestiä sekä syötteiden sanitointi (XSS-suojaus).
+
+
 - 🔗 **Live-demo (GitHub Pages):** [https://fahad11abbas.github.io/eco-living-hub/](https://fahad11abbas.github.io/eco-living-hub/)
 - 💻 **Lähdekoodi (GitHub):** [https://github.com/FAHAD11ABBAS/eco-living-hub](https://github.com/FAHAD11ABBAS/eco-living-hub)
 ---
