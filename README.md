@@ -202,10 +202,12 @@ eco-living-hub/
 └── vite.config.js
 ```
 
+
+
+
+
 8. Tekijä
 
 Abbas Fahad Farhood Alfarttoosi (FAHAD11ABBAS)
 
-Huomautus: Projektin idea, koodi, ratkaisut sekä ulkoasun suunnittelu ja muotoilu ovat kokonaan opiskelijan itsensä toteuttamia. AI-työkalua on käytetty apuna suomen kielen käännöksissä, tekstien ja koodin tarkistuksessa sekä joidenkin teknisten ongelmien ratkaisemisessa ja konsultoinnissa. Projektin kehityksessä on hyödynnetty myös opettajien ohjausta, neuvontaa ja arvokkaita suosituksia.
-
----
+Huomautus: Projektin idea, koodi, ratkaisut sekä ulkoasun suunnittelu ja muotoilu ovat kokonaan opiskelijan itsensä toteuttamia. AI-työkalua on käytetty apuna suomen kielen käännöksissä, tekstien ja koodin tarkistuksessa sekä joidenkin teknisten ongelmien ratkaisemisessa ja konsultoinnissa. Opiskelija on lisäksi hyödyntänyt projektin toteutuksessa Business College Helsingin opettajien arvokkaita ohjeita, neuvoja ja suosituksia. Lämmin kiitos heille kaikesta tuesta ja työstä opintojeni hyväksi.*
